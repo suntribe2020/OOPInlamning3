@@ -1,7 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,48 +14,46 @@ import java.util.Map;
  * Project: OOPInlämning3
  * Copyright: MIT
  */
-public class GameOf15 extends JFrame implements ActionListener {
+public class GameOf15 extends JFrame {
 
     GameBoard gameBoard = new GameBoard();
     Map<Integer, JButton> buttons = createButtons();
-    JFrame frame = new JFrame("Game of 15");
-    JPanel mainPanel = new JPanel();
+    JButton newGameButton = new JButton("New Game");
+    JPanel buttonPanel = new JPanel();
+    JPanel newGamePanel = new JPanel();
 
-    GridLayout grid = new GridLayout(4, 4, 5, 5);
+    GridLayout grid = new GridLayout(4, 4, 1, 1);
 
     GameOf15() {
-        /*
-        JButton newGameButton = new JButton("New Game");
-        MouseListener mouseListener = new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-            }
-        };
-        newGameButton.addMouseListener(mouseListener);
-        */
         setupGameframe();
         updateView();
     }
 
     private void setupGameframe() {
-        frame.setLayout(grid);
+        buttonPanel.setLayout(grid);
         for (Map.Entry<Integer, JButton> entry : buttons.entrySet()) {
-            frame.add(entry.getValue(), entry.getKey());
+            buttonPanel.add(entry.getValue(), entry.getKey());
         }
 
-        frame.pack();
-        frame.setSize(350, 350);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+        add(buttonPanel);
+
+        newGamePanel.setLayout(new FlowLayout());
+        buttonPanel.add(newGamePanel);
+        buttonPanel.setPreferredSize(new Dimension(400, 350));
+        newGamePanel.add(newGameButton);
+        newGamePanel.setBackground(Color.LIGHT_GRAY);
+
+        add(newGamePanel);
+        pack();
+        setSize(450, 450);
+        setResizable(false);
+        setTitle("15 Puzzle-Game");
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         System.out.println(Arrays.toString(gameBoard.getGameBoard()));
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 
     // Mappar innehållet från gameboard till rätt knapp
@@ -70,13 +69,34 @@ public class GameOf15 extends JFrame implements ActionListener {
         }
     }
 
-    // Skapar knappar och lägger de i hashMap
+    // Skapar knappar och lägger de i HashMap
     private Map<Integer, JButton> createButtons() {
         HashMap<Integer, JButton> buttons = new HashMap<>();
         for (int i = 0; i < 16; i++) {
-            buttons.put((i), new JButton());
+            JButton button = new JButton();
+            button.addMouseListener(getMouseListener());
+            buttons.put((i), button);
         }
         return buttons;
+    }
+
+    private MouseListener getMouseListener() {
+        return new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+            }
+        };
     }
 
     public static void main(String[] args) {
