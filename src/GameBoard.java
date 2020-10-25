@@ -11,7 +11,11 @@ import java.util.Random;
  */
 public class GameBoard {
 
-    private final int[] gameBoard = new int[16];
+    private int[] gameBoard = new int[16];
+
+    GameBoard(int[] gameBoard) {
+        this.gameBoard = gameBoard;
+    }
 
     GameBoard() {
         boolean solvable = false;
@@ -22,8 +26,6 @@ public class GameBoard {
             }
             solvable = isSolvable(gameBoard);
         }
-
-        //System.out.println(Arrays.deepToString(gameBoard));
     }
 
     private List<Integer> getRandomNumbers() {
@@ -39,19 +41,51 @@ public class GameBoard {
         return randomNumbers;
     }
 
+    public boolean moveTile(int buttonNr) {
+        if (!isValidMove(buttonNr)) {
+            return false;
+        }
+        int swap = gameBoard[buttonNr];
+        for (int i = 0; i < gameBoard.length; i++) {
+            if (gameBoard[i] == 0) {
+                gameBoard[i] = swap;
+                gameBoard[buttonNr] = 0;
+            }
+        }
+        return true;
+    }
+
+    public boolean isValidMove(int buttonNr) {
+        for (int i = 0; i < gameBoard.length; i++) {
+            if (gameBoard[i] == 0) {
+                if (i == 3 || i == 7 || i == 11) {
+                    return (buttonNr == i - 1 || buttonNr == i + 4 || buttonNr == i - 4);
+                } else if ( i == 4 || i == 8 || i == 12) {
+                    return (buttonNr == i + 1 || buttonNr == i + 4 || buttonNr == i - 4);
+                }
+                return (buttonNr == i + 1 || buttonNr == i - 1 ||
+                        buttonNr == i + 4 || buttonNr == i - 4);
+            }
+        }
+        return false;
+    }
+
     public int[] getGameBoard() {
         return gameBoard;
     }
 
-    // lösningen kopierad från internet
+    public void setGameBoard(int[] gameBoard) {
+        this.gameBoard = gameBoard;
+    }
+
+    // Lösningen kopierad från internet
     public boolean isSolvable(int[] puzzle) {
         int parity = 0;
         int gridWidth = (int) Math.sqrt(puzzle.length);
         int row = 0; // the current row we are on
         int blankRow = 0; // the row with the blank tile
 
-        for (int i = 0; i < puzzle.length; i++)
-        {
+        for (int i = 0; i < puzzle.length; i++) {
             if (i % gridWidth == 0) { // advance to next row
                 row++;
             }
@@ -59,10 +93,8 @@ public class GameBoard {
                 blankRow = row; // save the row on which encountered
                 continue;
             }
-            for (int j = i + 1; j < puzzle.length; j++)
-            {
-                if (puzzle[i] > puzzle[j] && puzzle[j] != 0)
-                {
+            for (int j = i + 1; j < puzzle.length; j++) {
+                if (puzzle[i] > puzzle[j] && puzzle[j] != 0) {
                     parity++;
                 }
             }
