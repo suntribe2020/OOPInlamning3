@@ -25,8 +25,11 @@ public class GameOf15 extends JFrame {
     GridLayout grid = new GridLayout(4, 4, 1, 1);
 
     GameOf15() {
+        boolean play = true;
         setupGameframe();
-        updateView();
+        while (play) {
+            updateView();
+        }
     }
 
     private void setupGameframe() {
@@ -41,7 +44,9 @@ public class GameOf15 extends JFrame {
         newGamePanel.setLayout(new FlowLayout());
         buttonPanel.add(newGamePanel);
         buttonPanel.setPreferredSize(new Dimension(400, 350));
+
         newGamePanel.add(newGameButton);
+        newGameButton.addMouseListener(getMouseListener());
         newGamePanel.setBackground(Color.LIGHT_GRAY);
 
         add(newGamePanel);
@@ -63,8 +68,10 @@ public class GameOf15 extends JFrame {
             int number = gameBoard[i];
             if (number == 0) {
                 buttons.get(i).setBackground(Color.white);
+                buttons.get(i).setText("");
             } else {
                 buttons.get(i).setText(String.valueOf(number));
+                buttons.get(i).setBackground(Color.lightGray);
             }
         }
     }
@@ -74,6 +81,7 @@ public class GameOf15 extends JFrame {
         HashMap<Integer, JButton> buttons = new HashMap<>();
         for (int i = 0; i < 16; i++) {
             JButton button = new JButton();
+            button.setName(String.valueOf(i));
             button.addMouseListener(getMouseListener());
             buttons.put((i), button);
         }
@@ -84,7 +92,7 @@ public class GameOf15 extends JFrame {
         return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+                gameBoard.moveTile(Integer.parseInt(e.getComponent().getName()));
             }
 
             @Override
