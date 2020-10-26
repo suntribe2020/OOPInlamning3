@@ -44,6 +44,7 @@ public class GameOf15 extends JFrame {
 
         newGamePanel.add(newGameButton);
         newGameButton.addMouseListener(getMouseListener());
+        newGameButton.setName("newgame");
         newGamePanel.setBackground(Color.LIGHT_GRAY);
 
         add(newGamePanel);
@@ -89,7 +90,12 @@ public class GameOf15 extends JFrame {
         return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                gameBoard.moveTile(Integer.parseInt(e.getComponent().getName()));
+                String buttonName = e.getComponent().getName();
+                if (buttonName.equals("newgame")) {
+                    gameBoard = new GameBoard();
+                } else {
+                    gameBoard.moveTile(Integer.parseInt(buttonName));
+                }
                 updateView();
             }
 
