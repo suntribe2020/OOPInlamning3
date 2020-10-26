@@ -41,6 +41,15 @@ public class GameBoard {
         return randomNumbers;
     }
 
+    public boolean checkWin() {
+        for (int i = 0; i < gameBoard.length - 1; i++) {
+            if (gameBoard[i] != i + 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean moveTile(int buttonNr) {
         if (!isValidMove(buttonNr)) {
             return false;
@@ -60,7 +69,7 @@ public class GameBoard {
             if (gameBoard[i] == 0) {
                 if (i == 3 || i == 7 || i == 11) {
                     return (buttonNr == i - 1 || buttonNr == i + 4 || buttonNr == i - 4);
-                } else if ( i == 4 || i == 8 || i == 12) {
+                } else if (i == 4 || i == 8 || i == 12) {
                     return (buttonNr == i + 1 || buttonNr == i + 4 || buttonNr == i - 4);
                 }
                 return (buttonNr == i + 1 || buttonNr == i - 1 ||

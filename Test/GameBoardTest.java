@@ -14,9 +14,9 @@ public class GameBoardTest {
     @Test
     public final void allowedMoveTileTest() {
         int[] testBoard = new int[]{1, 2, 3, 4,
-                                    5, 0, 6, 7,
-                                    8, 9, 10, 11,
-                                   12, 13, 14, 15};
+                5, 0, 6, 7,
+                8, 9, 10, 11,
+                12, 13, 14, 15};
         GameBoard gameBoard = new GameBoard(testBoard);
         // Testa flytta neråt
         assertTrue(gameBoard.moveTile(1));
@@ -36,7 +36,7 @@ public class GameBoardTest {
         // Testa flytta till vänster
         assertTrue(gameBoard.moveTile(5));
         assertEquals(5, gameBoard.getGameBoard()[4]);
-        assertEquals(0,gameBoard.getGameBoard()[5]);
+        assertEquals(0, gameBoard.getGameBoard()[5]);
     }
 
     @Test
@@ -68,9 +68,9 @@ public class GameBoardTest {
     @Test
     public final void notAllowedMoveTileTest() {
         int[] testBoard = new int[]{0, 1, 2, 3,
-                                    4, 5, 6, 7,
-                                    8, 9, 10, 11,
-                                    12, 13, 14, 15};
+                4, 5, 6, 7,
+                8, 9, 10, 11,
+                12, 13, 14, 15};
         GameBoard gameBoard = new GameBoard(testBoard);
         assertFalse(gameBoard.moveTile(2));
         // kolla att värdet inte har bytt plats
@@ -78,7 +78,16 @@ public class GameBoardTest {
         assertEquals(0, gameBoard.getGameBoard()[0]);
     }
 
-    private int[] createCustomGameboard (int elementWithZero) {
+    @Test
+    public final void checkWinTest() {
+        GameBoard gameBoard = new GameBoard();
+        gameBoard.setGameBoard(createCustomGameboard(15));
+        assertTrue(gameBoard.checkWin());
+        gameBoard.setGameBoard(createCustomGameboard(11));
+        assertFalse(gameBoard.checkWin());
+    }
+
+    private int[] createCustomGameboard(int elementWithZero) {
         int[] testBoard = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
         testBoard[elementWithZero] = 0;
         return testBoard;
