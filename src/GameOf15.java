@@ -95,6 +95,9 @@ public class GameOf15 extends JFrame {
                     gameBoard = new GameBoard();
                 } else {
                     gameBoard.moveTile(Integer.parseInt(buttonName));
+                    if (gameBoard.checkWin()) {
+                        displayWinDialogue();
+                    }
                 }
                 updateView();
             }
@@ -109,6 +112,10 @@ public class GameOf15 extends JFrame {
                 super.mouseExited(e);
             }
         };
+    }
+
+    private void displayWinDialogue() {
+        JOptionPane.showMessageDialog(null, "Grattis! Du vann!");
     }
 
     public static void main(String[] args) {
