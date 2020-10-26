@@ -25,11 +25,8 @@ public class GameOf15 extends JFrame {
     GridLayout grid = new GridLayout(4, 4, 1, 1);
 
     GameOf15() {
-        boolean play = true;
         setupGameframe();
-        while (play) {
-            updateView();
-        }
+        updateView();
     }
 
     private void setupGameframe() {
@@ -93,6 +90,7 @@ public class GameOf15 extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 gameBoard.moveTile(Integer.parseInt(e.getComponent().getName()));
+                updateView();
             }
 
             @Override
