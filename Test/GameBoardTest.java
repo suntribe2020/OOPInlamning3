@@ -43,12 +43,12 @@ public class GameBoardTest {
     public final void notAllowedEdgeTileMoveTest() {
         GameBoard gameBoard = new GameBoard();
         // Testar 0:an på höger kant
-        // Sätter 0:an i element 7
-        gameBoard.setGameBoard(createCustomGameboard(7));
-        assertFalse(gameBoard.moveTile(8));
         // Sätter 0:an i element 3
         gameBoard.setGameBoard(createCustomGameboard(3));
         assertFalse(gameBoard.moveTile(4));
+        // Sätter 0:an i element 7
+        gameBoard.setGameBoard(createCustomGameboard(7));
+        assertFalse(gameBoard.moveTile(8));
         // Sätter 0:an i element 11
         gameBoard.setGameBoard(createCustomGameboard(11));
         assertFalse(gameBoard.moveTile(12));
@@ -73,7 +73,7 @@ public class GameBoardTest {
                 12, 13, 14, 15};
         GameBoard gameBoard = new GameBoard(testBoard);
         assertFalse(gameBoard.moveTile(2));
-        // kolla att värdet inte har bytt plats
+        // Kolla att värdet inte har bytt plats
         assertEquals(2, gameBoard.getGameBoard()[2]);
         assertEquals(0, gameBoard.getGameBoard()[0]);
     }

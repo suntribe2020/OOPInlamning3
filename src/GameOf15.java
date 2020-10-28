@@ -21,8 +21,9 @@ public class GameOf15 extends JFrame {
     JButton newGameButton = new JButton("New Game");
     JPanel buttonPanel = new JPanel();
     JPanel newGamePanel = new JPanel();
+    int counter = 0;
 
-    GridLayout grid = new GridLayout(4, 4, 1, 1);
+    GridLayout grid = new GridLayout(4, 4, 2, 2);
 
     GameOf15() {
         setupGameframe();
@@ -31,8 +32,10 @@ public class GameOf15 extends JFrame {
 
     private void setupGameframe() {
         buttonPanel.setLayout(grid);
-        for (Map.Entry<Integer, JButton> entry : buttons.entrySet()) {
-            buttonPanel.add(entry.getValue(), entry.getKey());
+        // Loopar genom HashMapen med knappar och säkerställer att de hamnar i rätt ordning
+        // med hjälp av keyn
+        for (int buttonNr = 0; buttonNr < buttons.size(); buttonNr++) {
+            buttonPanel.add(buttons.get(buttonNr));
         }
 
         setLayout(new FlowLayout());
@@ -68,8 +71,9 @@ public class GameOf15 extends JFrame {
                 buttons.get(i).setBackground(Color.white);
                 buttons.get(i).setText("");
             } else {
+                // Sätter texten på knapparna med värden från elementen på gameboard
                 buttons.get(i).setText(String.valueOf(number));
-                buttons.get(i).setBackground(Color.lightGray);
+                buttons.get(i).setBackground(new Color(179, 250, 125));
             }
         }
     }
@@ -77,11 +81,13 @@ public class GameOf15 extends JFrame {
     // Skapar knappar och lägger de i HashMap
     private Map<Integer, JButton> createButtons() {
         HashMap<Integer, JButton> buttons = new HashMap<>();
-        for (int i = 0; i < 16; i++) {
+        for (int buttonNr = 0; buttonNr < 16; buttonNr++) {
             JButton button = new JButton();
-            button.setName(String.valueOf(i));
+            // Sätter namnen på knapparna
+            button.setName(String.valueOf(buttonNr));
             button.addMouseListener(getMouseListener());
-            buttons.put((i), button);
+            // Använder för enkelhetens skull även buttonNr som key
+            buttons.put((buttonNr), button);
         }
         return buttons;
     }
@@ -93,8 +99,11 @@ public class GameOf15 extends JFrame {
                 String buttonName = e.getComponent().getName();
                 if (buttonName.equals("newgame")) {
                     gameBoard = new GameBoard();
+                    counter = 0;
                 } else {
-                    gameBoard.moveTile(Integer.parseInt(buttonName));
+                    if (gameBoard.moveTile(Integer.parseInt(buttonName))) {
+                        counter++;
+                    }
                     if (gameBoard.checkWin()) {
                         displayWinDialogue();
                     }
@@ -104,18 +113,25 @@ public class GameOf15 extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
+                String name = e.getComponent().getName();
+                if (!name.equals("newgame") && gameBoard.isValidMove(Integer.parseInt(name))) {
+                    // Sätter färgen på knapparna som går att flytta till grön
+                    e.getComponent().setBackground(Color.GREEN);
+                }
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
+                String name = e.getComponent().getName();
+                if (!name.equals("newgame") && e.getComponent().getBackground().equals(Color.GREEN)) {
+                    e.getComponent().setBackground(new Color(179, 250, 125));
+                }
             }
         };
     }
 
     private void displayWinDialogue() {
-        JOptionPane.showMessageDialog(null, "Grattis! Du vann!");
+        JOptionPane.showMessageDialog(null, "Grattis! Du vann! Det tog " + counter + " antal drag!");
     }
 
     public static void main(String[] args) {

@@ -19,6 +19,7 @@ public class GameBoard {
 
     GameBoard() {
         boolean solvable = false;
+        // Loopar så länge det inte skapats ett gameboard som går att lösa
         while (!solvable) {
             List<Integer> randomNumbers = getRandomNumbers();
             for (int i = 0; i < gameBoard.length; i++) {
@@ -28,12 +29,14 @@ public class GameBoard {
         }
     }
 
+    // Genererar slumpmässiga nummer mellan 0 och 15 och lagrar dessa i en lista
     private List<Integer> getRandomNumbers() {
         ArrayList<Integer> randomNumbers = new ArrayList<>();
         Random random = new Random();
         int number;
         while (randomNumbers.size() != 16) {
             number = random.nextInt(16);
+            // Ser till att det inte läggs några dubbletter i listan
             if (!randomNumbers.contains(number)) {
                 randomNumbers.add(number);
             }
@@ -41,8 +44,11 @@ public class GameBoard {
         return randomNumbers;
     }
 
+    // Kontrollerar vinsten
     public boolean checkWin() {
+        // -1 för att man inte behöver kolla 0:an som kommer sist
         for (int i = 0; i < gameBoard.length - 1; i++) {
+            // Kollar så att värdet är +1 från elementet (0=1, 1=2 osv)
             if (gameBoard[i] != i + 1) {
                 return false;
             }
@@ -57,6 +63,7 @@ public class GameBoard {
         int swap = gameBoard[buttonNr];
         for (int i = 0; i < gameBoard.length; i++) {
             if (gameBoard[i] == 0) {
+                // 0:an byter plats med värdet i element[buttonNr]
                 gameBoard[i] = swap;
                 gameBoard[buttonNr] = 0;
             }
@@ -67,8 +74,10 @@ public class GameBoard {
     public boolean isValidMove(int buttonNr) {
         for (int i = 0; i < gameBoard.length; i++) {
             if (gameBoard[i] == 0) {
+                // Om 0:an är i element 3, 7 eller 11 går det inte att flytta ett steg framåt
                 if (i == 3 || i == 7 || i == 11) {
                     return (buttonNr == i - 1 || buttonNr == i + 4 || buttonNr == i - 4);
+                    // Om 0:an är i element 4, 8 eller 12 går det inte att flytta ett steg bakåt
                 } else if (i == 4 || i == 8 || i == 12) {
                     return (buttonNr == i + 1 || buttonNr == i + 4 || buttonNr == i - 4);
                 }
